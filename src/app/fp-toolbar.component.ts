@@ -4,7 +4,10 @@ import { Component } from '@angular/core';
     moduleId: module.id,
     selector: 'fp-toolbar',
     templateUrl: 'fp-toolbar.component.html',
-    styleUrls: ['fp-toolbar.component.css']
+    styleUrls: [
+        'fp-toolbar.component.css',
+        'shared/palette.css'
+    ]
 })
 
 export class FPToolbarComponent {
