@@ -3,6 +3,7 @@ import { Routes, Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/ro
 import { ContactComponent } from './+contact';
 import { HomeComponent } from './+home';
 import { ToolbarComponent } from './toolbar';
+import { ProjectsComponent } from './+projects';
 
 @Component({
   moduleId: module.id,
@@ -17,23 +18,17 @@ import { ToolbarComponent } from './toolbar';
 })
 
 @Routes([
+  { path: '', component: HomeComponent },
+  { path: '/home', component: HomeComponent },
   { path: '/contact', component: ContactComponent },
-  { path: '/home', component: HomeComponent }
+  { path: '/projects', component: ProjectsComponent }
 ])
 
 export class FreakyPineappleAppComponent implements OnInit {
-  title: string = 'freaky-pineapple works!';
 
-  constructor(private router: Router) { }
+  constructor() { }
 
   ngOnInit() {
-    let nav: string = localStorage.getItem('nav');
-    if (nav === 'contact') {
-      console.log('contact works');
-      this.router.navigate(['/contact']);
-    } else if (nav === 'home') {
-      console.log('home works');
-      this.router.navigate(['/home']);
-    }
   }
+  
 }

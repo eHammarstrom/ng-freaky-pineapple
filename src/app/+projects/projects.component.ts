@@ -2,21 +2,18 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  selector: 'app-contact',
-  templateUrl: 'contact.component.html',
+  selector: 'app-projects',
+  templateUrl: 'projects.component.html',
   styleUrls: [
-    'contact.component.css',
+    'projects.component.css',
     '../palette.css'
   ]
 })
-export class ContactComponent implements OnInit {
+export class ProjectsComponent implements OnInit {
 
   constructor() {}
 
   ngOnInit() {
-  }
-
-  contactToHome() {
   }
 
 }

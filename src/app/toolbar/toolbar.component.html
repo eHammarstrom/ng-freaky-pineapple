@@ -5,6 +5,6 @@
         accent-color
         standard-box-shadow"
         *ngFor="let menu of menus">
-        <li class="menu-item">{{menu}}</li>
+        <li (click)="route(menu)" class="menu-item">{{menu}}</li>
     </ul>
 </div>
