@@ -2,6 +2,7 @@
 
 # project specifics
 /src/data
+/src/app/data
 
 # compiled output
 /dist
