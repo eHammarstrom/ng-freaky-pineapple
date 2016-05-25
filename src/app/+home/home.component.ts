@@ -14,7 +14,7 @@ import { HomeService } from './home.service';
   providers: [HomeService]
 })
 export class HomeComponent implements OnInit {
-  baconData: string = '';
+  baconData: string = 'loading baconData...';
 
   constructor(private homeService: HomeService) { }
 

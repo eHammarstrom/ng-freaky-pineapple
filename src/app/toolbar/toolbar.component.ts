@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 export class ToolbarComponent implements OnInit {
   menus = [
     'Home',
+    'Spotify',
     'Projects',
     'Contact'
   ];

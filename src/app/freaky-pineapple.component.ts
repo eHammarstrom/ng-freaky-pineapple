@@ -4,6 +4,7 @@ import { ContactComponent } from './+contact';
 import { HomeComponent } from './+home';
 import { ToolbarComponent } from './toolbar';
 import { ProjectsComponent } from './+projects';
+import { SpotifyComponent } from './+spotify';
 
 @Component({
   moduleId: module.id,
@@ -21,14 +22,17 @@ import { ProjectsComponent } from './+projects';
   { path: '', component: HomeComponent },
   { path: '/home', component: HomeComponent },
   { path: '/contact', component: ContactComponent },
-  { path: '/projects', component: ProjectsComponent }
+  { path: '/projects', component: ProjectsComponent },
+  { path: '/spotify', component: SpotifyComponent }
 ])
 
 export class FreakyPineappleAppComponent implements OnInit {
+
+  title: string = 'freaky-pineapple works';
 
   constructor() { }
 
   ngOnInit() {
   }
-  
+
 }
