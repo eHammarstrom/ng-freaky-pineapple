@@ -1,7 +1,8 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { SpotifyData } from './spotify-data';
+// import { SpotifyData } from './spotify-data';
 
+@Injectable()
 export class SpotifyService {
   private clientId: string;
   private clientSecret: string;
@@ -9,9 +10,6 @@ export class SpotifyService {
   private callbackUrl: string;
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
   wakeUpTest(): string {
     console.log('SpotifyService is awake and initiated.');
@@ -22,7 +20,7 @@ export class SpotifyService {
     clientSecret: string,
     scopes: string,
     callbackUrl: string): void {
-    console.log(clientId);
+        console.log(clientId);
   }
 
   getAuthCode(): void {

@@ -7,7 +7,7 @@ import 'rxjs/add/operator/catch';
 
 import { SpotifyService } from './spotify.service';
 
-import { SpotifyData } from './spotify-data';
+// import { SpotifyData } from './spotify-data';
 
 @Component({
   moduleId: module.id,
@@ -21,10 +21,7 @@ export class SpotifyComponent implements OnInit {
   private credentialsData: {
     clientId: string,
     clientSecret: string
-  };// = {
-    //clientId: 'asd',
-    //clientSecret: 'asd'
-  //};
+  };
 
   constructor(
     private http: Http,
@@ -32,16 +29,13 @@ export class SpotifyComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    //let prep = this.prepareCredentials;
-    let data;
-
     if (this.spotifyService) {
       this.http.get('../app/data/credentials.json')
         .map(this.handleResponse)
         .subscribe(
           this.setupCredentials,
-          err => console.error(err),
-          () => { this.prepareCredentials() }
+          this.handleError,
+          () => { this.prepareCredentials(); }
         );
     }
   }
