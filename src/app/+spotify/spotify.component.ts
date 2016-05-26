@@ -46,7 +46,8 @@ export class SpotifyComponent implements OnInit {
       clientId: <string>subData.clientId,
       clientSecret: <string>subData.clientSecret
     };
-    console.log('credentials: ' + this.credentialsData);
+    console.log('credentials: ' +
+        JSON.stringify(this.credentialsData));
     console.log('credentials clientId: ' + this.credentialsData.clientId);
     console.log('credentials clientSecret: ' + this.credentialsData.clientSecret);
   }
