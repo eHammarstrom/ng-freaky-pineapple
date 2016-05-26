@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { OnActivate, RouteSegment } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { SpotifyService } from './spotify.service';
-
-// import { SpotifyData } from './spotify-data';
 
 @Component({
   moduleId: module.id,
@@ -17,11 +16,20 @@ import { SpotifyService } from './spotify.service';
   providers: [SpotifyService]
 })
 
-export class SpotifyComponent implements OnInit {
+export class SpotifyComponent implements OnInit, OnActivate {
+  private callbackUrl: string = 'http://localhost:4200/spotify';
   private credentialsData: {
     clientId: string,
     clientSecret: string
   };
+
+  isAuthenticated: boolean = false;
+
+  authUrl: string;
+
+  retCode: string;
+  retError: string;
+  retState: string;
 
   constructor(
     private http: Http,
@@ -33,14 +41,31 @@ export class SpotifyComponent implements OnInit {
       this.http.get('../app/data/credentials.json')
         .map(this.handleResponse)
         .subscribe(
-          this.setupCredentials,
-          this.handleError,
-          () => { this.prepareCredentials(); }
+          data => this.setupCredentials(data),
+          err => this.handleError(err),
+          () => this.prepareCredentials()
         );
     }
   }
 
+  routerOnActivate(routeSegment: RouteSegment): void {
+    console.log(routeSegment.parameters);
+    let data;
+    if ((data = routeSegment.getParam('code')) != null) {
+      this.retCode = data;
+    } else if ((data = routeSegment.getParam('error')) != null) {
+      this.retError = data;
+    }
+    this.retState = routeSegment.getParam('state');
+  }
+
+  private spotifyLogin() {
+    this.authUrl = this.spotifyService.getAuthUrl();
+    window.location.href = this.authUrl;
+  }
+
   private setupCredentials(subData) {
+    console.log(this);
     console.log('Setting up credentials...');
     this.credentialsData = {
       clientId: <string>subData.clientId,
@@ -57,8 +82,7 @@ export class SpotifyComponent implements OnInit {
     this.spotifyService.prepare(
       this.credentialsData.clientId,
       this.credentialsData.clientSecret,
-      '', 'http://localhost:4200/spotify');
-
+      '', this.callbackUrl);
   }
 
   private handleResponse(res: Response) {

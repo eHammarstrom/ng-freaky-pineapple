@@ -1,3 +1,16 @@
 <p>
   spotify works!
 </p>
+
+<div class="auth" *ngIf="!isAuthenticated && spotifyService">
+  <button (click)="spotifyLogin()">Authenticate</button>
+</div>
+
+<br>
+<br>
+
+<p *ngIf="retState">
+  {{retCode}}
+  {{retError}}
+  {{retState}}
+</p>
