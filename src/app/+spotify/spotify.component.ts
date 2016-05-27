@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { OnActivate, RouteSegment } from '@angular/router';
+
+import { QueryParams } from '@ngrx/router';
+import 'rxjs/add/operator/pluck';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -13,10 +15,13 @@ import { SpotifyService } from './spotify.service';
   selector: 'app-spotify',
   templateUrl: 'spotify.component.html',
   styleUrls: ['spotify.component.css'],
-  providers: [SpotifyService]
+  providers: [
+    SpotifyService,
+    QueryParams
+  ]
 })
 
-export class SpotifyComponent implements OnInit, OnActivate {
+export class SpotifyComponent implements OnInit {
   private callbackUrl: string = 'http://localhost:4200/spotify';
   private credentialsData: {
     clientId: string,
@@ -27,16 +32,37 @@ export class SpotifyComponent implements OnInit, OnActivate {
 
   authUrl: string;
 
-  retCode: string;
-  retError: string;
-  retState: string;
+  callbackCode: Observable<string>;
+  callbackError: Observable<string>;
 
   constructor(
     private http: Http,
-    private spotifyService: SpotifyService
+    private spotifyService: SpotifyService,
+    private queryParams: QueryParams
   ) { }
 
+  private handleQuery(data: string): string {
+    return data;
+  }
+
   ngOnInit() {
+    //this.callbackCode = this.queryParams.pluck('code');
+    //this.callbackError = this.queryParams.pluck('error');
+
+    //this.callbackCode.map(this.handleQuery)
+      //.subscribe(data => console.log('callbackCode: ' + data));
+    //this.callbackError.map(str => console.log('callback error: ' + str));
+
+    this.queryParams.pluck('error')
+      .map((data: string) => {
+        return data;
+      })
+      .subscribe(
+        (data) => { console.log(data); },
+        (err) => { console.log(err); },
+        () => { console.log('Got param.'); }
+      );
+
     if (this.spotifyService) {
       this.http.get('../app/data/credentials.json')
         .map(this.handleResponse)
@@ -47,9 +73,7 @@ export class SpotifyComponent implements OnInit, OnActivate {
         );
     }
   }
-
-  routerOnActivate(routeSegment: RouteSegment): void {
-    console.log(routeSegment.parameters);
+      /*
     let data;
     if ((data = routeSegment.getParam('code')) != null) {
       this.retCode = data;
@@ -57,7 +81,7 @@ export class SpotifyComponent implements OnInit, OnActivate {
       this.retError = data;
     }
     this.retState = routeSegment.getParam('state');
-  }
+    */
 
   private spotifyLogin() {
     this.authUrl = this.spotifyService.getAuthUrl();

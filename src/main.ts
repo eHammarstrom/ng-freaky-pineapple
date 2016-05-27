@@ -7,4 +7,8 @@ if (environment.production) {
   enableProdMode();
 }
 
-bootstrap(FreakyPineappleAppComponent, [HTTP_PROVIDERS]);
+
+bootstrap(FreakyPineappleAppComponent,
+  [
+    HTTP_PROVIDERS
+  ]);
