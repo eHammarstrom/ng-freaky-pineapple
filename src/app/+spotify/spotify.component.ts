@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
+//import { Router, RouteSegment, OnActivate } from '@angular/router';
 
 import { QueryParams } from '@ngrx/router';
 import 'rxjs/add/operator/pluck';
@@ -21,7 +22,7 @@ import { SpotifyService } from './spotify.service';
   ]
 })
 
-export class SpotifyComponent implements OnInit {
+export class SpotifyComponent implements OnInit/*, OnActivate */ {
   private callbackUrl: string = 'http://localhost:4200/spotify';
   private credentialsData: {
     clientId: string,
@@ -32,36 +33,79 @@ export class SpotifyComponent implements OnInit {
 
   authUrl: string;
 
-  callbackCode: Observable<string>;
-  callbackError: Observable<string>;
+  //callbackCode: Observable<string>;
+  //callbackError: Observable<string>;
+
+  callback: Observable<string>;
 
   constructor(
     private http: Http,
     private spotifyService: SpotifyService,
+    //private routeSegment: RouteSegment,
+    //private router: Router
     private queryParams: QueryParams
-  ) { }
-
-  private handleQuery(data: string): string {
-    return data;
+  ) {
+    //this.callback = queryParams.pluck('error');
   }
 
+  /*
+  routerOnActivate() {
+    console.log(this.routeSegment.parameters);
+    console.log(this.routeSegment.getParam('error'));
+  }
+  */
+
   ngOnInit() {
-    //this.callbackCode = this.queryParams.pluck('code');
-    //this.callbackError = this.queryParams.pluck('error');
 
-    //this.callbackCode.map(this.handleQuery)
-      //.subscribe(data => console.log('callbackCode: ' + data));
-    //this.callbackError.map(str => console.log('callback error: ' + str));
+    //this.error = this.routeSegment.getParam('error');
+    //console.log(this.error);
 
-    this.queryParams.pluck('error')
-      .map((data: string) => {
-        return data;
-      })
+    //this.queryParams.distinctUntilChanged().subscribe((data) => { console.log(data); }, (err) => { console.error(err); });
+
+    /*
+    this.queryParams.pluck('error').subscribe(
+      (data) => { console.log(data); },
+      (err) => { console.error(err); },
+      () => { console.log('queryParams onComplete'); }
+    );
+    */
+
+    /*
+    this.queryParams.subscribe(
+      (data) => console.log(data),
+      (err) => console.log(err),
+      () => console.log('queryParams onComplete')
+    );
+    */
+
+    /*
+    this.callback.map((data) => { return data; })
       .subscribe(
         (data) => { console.log(data); },
-        (err) => { console.log(err); },
-        () => { console.log('Got param.'); }
+        (err) => { console.log (err); },
+        () => { console.log('Complete'); }
       );
+    */
+
+    /*
+    if (this.queryParams) {
+      this.queryParams
+        .subscribe(
+          (data) => console.log(data),
+          (err) => console.error(err),
+          () => console.log('complete')
+        );
+      this.queryParams.pluck('error')
+        .map(data => data)
+        .subscribe(
+          (data) => { console.log(data); },
+          (err) => { console.log(err); },
+          () => { console.log('Got param.'); }
+        );
+    }
+    */
+
+
 
     if (this.spotifyService) {
       this.http.get('../app/data/credentials.json')
@@ -73,15 +117,15 @@ export class SpotifyComponent implements OnInit {
         );
     }
   }
-      /*
-    let data;
-    if ((data = routeSegment.getParam('code')) != null) {
-      this.retCode = data;
-    } else if ((data = routeSegment.getParam('error')) != null) {
-      this.retError = data;
-    }
-    this.retState = routeSegment.getParam('state');
-    */
+  /*
+let data;
+if ((data = routeSegment.getParam('code')) != null) {
+  this.retCode = data;
+} else if ((data = routeSegment.getParam('error')) != null) {
+  this.retError = data;
+}
+this.retState = routeSegment.getParam('state');
+*/
 
   private spotifyLogin() {
     this.authUrl = this.spotifyService.getAuthUrl();
@@ -96,7 +140,7 @@ export class SpotifyComponent implements OnInit {
       clientSecret: <string>subData.clientSecret
     };
     console.log('credentials: ' +
-        JSON.stringify(this.credentialsData));
+      JSON.stringify(this.credentialsData));
     console.log('credentials clientId: ' + this.credentialsData.clientId);
     console.log('credentials clientSecret: ' + this.credentialsData.clientSecret);
   }
